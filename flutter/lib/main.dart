@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:onichan/color_utils.dart';
+import 'package:onichan/controller/web3_contrller.dart';
+import 'package:onichan/controller/web3_service.dart';
 import 'package:onichan/pages/mechant_screen.dart';
 import 'package:onichan/pd_utils.dart';
 import 'package:onichan/utils.dart';
@@ -28,32 +31,21 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: colorBackGround),
           useMaterial3: true,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const MyHomePage(),
       ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+class MyHomePage extends ConsumerWidget {
+  const MyHomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    okToast('You have pushed the button this many times: $_counter');
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final usdtAmount = ref.watch(getTokenBalanceProvider(
+        "0x0a7a51B8887ca23B13d692eC8Cb1CCa4100eda4B", usdtAddress));
+    final usdcAmount = ref.watch(getTokenBalanceProvider(
+        "0x0a7a51B8887ca23B13d692eC8Cb1CCa4100eda4B", usdcAddress));
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -89,6 +81,64 @@ class _MyHomePageState extends State<MyHomePage> {
                     'assets/onichan.riv',
                   ),
                 ],
+              ),
+            ),
+            usdtAmount.when(
+              data: (data) => Text(
+                "總残高: ${BigInt.zero / BigInt.from(10).pow(6)} USDT",
+                style: GoogleFonts.delaGothicOne().copyWith(
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => Text(
+                "總残高: 0 $error USDT",
+                style: GoogleFonts.delaGothicOne().copyWith(
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                await dotenv.load(fileName: ".env");
+
+                final z = ref.read(web3DartControllerProvider);
+              },
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                padding: pdW24H16,
+                margin: pdH20,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  'よし、心配しないで。これからお兄ちゃんがちゃんと助けてあげるからね。',
+                  style: GoogleFonts.lilitaOne().copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            h4,
+            usdcAmount.when(
+              data: (data) => Text(
+                "總残高: ${BigInt.zero / BigInt.from(10).pow(6)} USDC",
+                style: GoogleFonts.delaGothicOne().copyWith(
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => Text(
+                "總残高: 0 $error USDC",
+                style: GoogleFonts.delaGothicOne().copyWith(
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
             Padding(

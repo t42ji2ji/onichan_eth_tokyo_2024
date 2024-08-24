@@ -8,6 +8,15 @@
       "flutterMode": "debug",
       "args": [],
       "program": "lib/main.dart"
+    },
+    // ptofile
+    {
+      "name": "Profile",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": [],
+      "program": "lib/main.dart"
     }
   ]
 }

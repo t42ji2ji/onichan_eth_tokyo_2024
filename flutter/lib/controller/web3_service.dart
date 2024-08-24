@@ -24,7 +24,9 @@ FutureOr<String> getBalance(GetBalanceRef ref, String address) async {
 @riverpod
 FutureOr<String> getTokenBalance(
     GetTokenBalanceRef ref, String address, String tokenAddress) async {
-  final client = ref.read(web3DartControllerProvider.notifier).web3Client();
+  final client = ref
+      .read(web3DartControllerProvider.notifier)
+      .web3Client(rpc: Rpc.scrollSepolia);
 
   // ERC20 token ABI
   const abi =

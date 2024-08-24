@@ -21,21 +21,13 @@ class MerchantScreen extends ConsumerWidget {
           padding: pd16,
           child: Column(
             children: [
-              Row(
-                children: [
-                  Image.asset('assets/onii.png', width: 30),
-                  Expanded(
-                    child: Text(
-                      "残高: ${totalAmount / BigInt.from(10).pow(6)} USD",
-                      style: GoogleFonts.delaGothicOne().copyWith(
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
+              Text(
+                "注文一覧",
+                style: GoogleFonts.delaGothicOne().copyWith(
+                  fontSize: 32,
+                ),
               ),
-              h24,
+              h12,
               Expanded(
                 child: ListView.builder(
                   itemCount: allOrders.length,
@@ -96,6 +88,28 @@ class MerchantScreen extends ConsumerWidget {
                     );
                   },
                 ),
+              ),
+              const Divider(
+                height: 24,
+              ),
+              Row(
+                children: [
+                  Image.asset(
+                    "assets/usdt.png",
+                    width: 32,
+                    height: 32,
+                  ),
+                  w8,
+                  Expanded(
+                    child: Text(
+                      "總残高: ${totalAmount / BigInt.from(10).pow(6)} USDT",
+                      style: GoogleFonts.delaGothicOne().copyWith(
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
