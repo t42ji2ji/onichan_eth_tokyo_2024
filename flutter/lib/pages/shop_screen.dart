@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:onichan/color_utils.dart';
 import 'package:onichan/pages/amount_screen.dart';
+import 'package:onichan/pages/bank_screen.dart';
 import 'package:onichan/pd_utils.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -192,7 +193,14 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                   );
                 },
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BankScreen(),
+                      ),
+                    );
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -222,6 +230,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                 ),
               ),
             ),
+            h12,
           ],
         ),
       ),
