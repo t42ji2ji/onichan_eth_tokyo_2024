@@ -26,7 +26,7 @@ class MerchantScreen extends ConsumerWidget {
                   Image.asset('assets/onii.png', width: 30),
                   Expanded(
                     child: Text(
-                      "残高: ${totalAmount / BigInt.from(10).pow(6)} USDT",
+                      "残高: ${totalAmount / BigInt.from(10).pow(6)} USD",
                       style: GoogleFonts.delaGothicOne().copyWith(
                         fontSize: 20,
                       ),
@@ -69,7 +69,7 @@ class MerchantScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   subtitle: Text(
-                                    "金額: ${order.amount / BigInt.from(10).pow(6)} USDT\n状態: 未受取",
+                                    "金額: ${order.amount / BigInt.from(10).pow(6)} ${order.symbol}\n状態: 未受取",
                                     style: GoogleFonts.delaGothicOne().copyWith(
                                       fontSize: 16,
                                     ),

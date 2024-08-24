@@ -163,14 +163,14 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
               ],
             ),
             Text(
-              "USDT",
+              widget.order.symbol,
               style: GoogleFonts.delaGothicOne().copyWith(
                 fontSize: 70,
               ),
               textAlign: TextAlign.center,
             ),
             Text(
-              "max: $maxAmount USDT",
+              "max: $maxAmount ${widget.order.symbol}",
               style: GoogleFonts.delaGothicOne().copyWith(
                 fontSize: 14,
               ),
@@ -182,7 +182,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
               child: Column(
                 children: [
                   Text(
-                    "${(value).toStringAsFixed(2)} USDT",
+                    "${(value).toStringAsFixed(2)} ${widget.order.symbol}",
                     style: GoogleFonts.delaGothicOne().copyWith(
                       fontSize: 20,
                     ),

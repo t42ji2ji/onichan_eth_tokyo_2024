@@ -75,6 +75,10 @@ FutureOr<List<Order>> allOrders(AllOrdersRef ref) async {
             id: e[0],
             from: (e[1] as EthereumAddress).hex,
             token: (e[2] as EthereumAddress).hex,
+            symbol: (e[2] as EthereumAddress).hex.toLowerCase() ==
+                    usdtAddress.toLowerCase()
+                ? 'USDT'
+                : 'USDC',
             amount: e[3],
             conditionHash: e[4],
           ))
