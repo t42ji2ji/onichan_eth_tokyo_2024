@@ -50,16 +50,19 @@ dependencies:
   oktoast: ^3.4.0
   google_fonts: ^6.2.1
   text_to_speech: ^0.2.3
+  reclaim_sdk: ^1.8.6
+  simple_circular_progress_bar: ^1.0.2
+  percent_indicator: ^4.2.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
+    # a tool for running code generators
+  build_runner:
+  # the code generator
+  json_serializable:
+  riverpod_generator:
   flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the

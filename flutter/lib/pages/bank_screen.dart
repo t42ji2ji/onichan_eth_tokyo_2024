@@ -14,7 +14,9 @@ class BankScreen extends ConsumerWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ProofScreen(),
+              builder: (context) => const ProofScreen(
+                title: '',
+              ),
             ),
           );
         },
