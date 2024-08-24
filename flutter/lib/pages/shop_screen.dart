@@ -1,11 +1,9 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:onichan/color_utils.dart';
-import 'package:onichan/pages/amount_screen.dart';
 import 'package:onichan/pages/bank_screen.dart';
 import 'package:onichan/pd_utils.dart';
 import 'package:onichan/types/order.dart';
@@ -243,50 +241,35 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AmountScreen(),
+                      builder: (context) => BankScreen(order: widget.order),
                     ),
                   );
                 },
-                child: GestureDetector(
-                  onTap: () {
-                    final amount = (Decimal.parse(value.toString()) *
-                            Decimal.fromBigInt(BigInt.from(10).pow(6))) *
-                        Decimal.fromInt(144);
-
-                    debugPrint('=======amount : $amount=========');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BankScreen(order: widget.order),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.green,
-                    ),
-                    padding: pdW12,
-                    child: Text(
-                      "即時購入",
-                      style: GoogleFonts.delaGothicOne().copyWith(
-                        fontSize: 52,
-                        height: 1,
-                      ),
-                      textAlign: TextAlign.center,
-                    )
-                        .animate(
-                            onPlay: (controller) =>
-                                controller.repeat(reverse: true))
-                        .scale(
-                          curve: Curves.easeInOut,
-                          begin: const Offset(1.0, 1.0),
-                          end: const Offset(1.1, 1.1),
-                          duration: const Duration(
-                            milliseconds: 300,
-                          ),
-                        ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.green,
                   ),
+                  padding: pdW12,
+                  child: Text(
+                    "即時購入",
+                    style: GoogleFonts.delaGothicOne().copyWith(
+                      fontSize: 52,
+                      height: 1,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                      .animate(
+                          onPlay: (controller) =>
+                              controller.repeat(reverse: true))
+                      .scale(
+                        curve: Curves.easeInOut,
+                        begin: const Offset(1.0, 1.0),
+                        end: const Offset(1.1, 1.1),
+                        duration: const Duration(
+                          milliseconds: 300,
+                        ),
+                      ),
                 ),
               ),
             ),

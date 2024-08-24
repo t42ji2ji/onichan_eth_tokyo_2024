@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:onichan/color_utils.dart';
+import 'package:onichan/controller/web3_contrller.dart';
 import 'package:onichan/controller/web3_service.dart';
 import 'package:onichan/pages/mechant_screen.dart';
 import 'package:onichan/pd_utils.dart';
@@ -40,10 +41,9 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usdtAmount = ref.watch(getTokenBalanceProvider(
-        "0x0a7a51B8887ca23B13d692eC8Cb1CCa4100eda4B", usdtAddress));
-    final usdcAmount = ref.watch(getTokenBalanceProvider(
-        "0x0a7a51B8887ca23B13d692eC8Cb1CCa4100eda4B", usdcAddress));
+    final address = ref.watch(web3DartControllerProvider).address;
+    final usdtAmount = ref.watch(getTokenBalanceProvider(address, usdtAddress));
+    final usdcAmount = ref.watch(getTokenBalanceProvider(address, usdcAddress));
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -83,7 +83,7 @@ class MyHomePage extends ConsumerWidget {
             ),
             usdtAmount.when(
               data: (data) => Text(
-                "總残高: ${BigInt.zero / BigInt.from(10).pow(6)} USDT",
+                "總残高: $data USDT",
                 style: GoogleFonts.delaGothicOne().copyWith(
                   fontSize: 20,
                 ),
@@ -91,36 +91,17 @@ class MyHomePage extends ConsumerWidget {
               ),
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stack) => Text(
-                "總残高: 0 $error USDT",
+                "總残高: 0 12312$error USDT",
                 style: GoogleFonts.delaGothicOne().copyWith(
                   fontSize: 20,
                 ),
                 textAlign: TextAlign.center,
-              ),
-            ),
-            GestureDetector(
-              onTap: () async {},
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                padding: pdW24H16,
-                margin: pdH20,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  'よし、心配しないで。これからお兄ちゃんがちゃんと助けてあげるからね。',
-                  style: GoogleFonts.lilitaOne().copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
               ),
             ),
             h4,
             usdcAmount.when(
               data: (data) => Text(
-                "總残高: ${BigInt.zero / BigInt.from(10).pow(6)} USDC",
+                "總残高: $data USDC",
                 style: GoogleFonts.delaGothicOne().copyWith(
                   fontSize: 20,
                 ),
@@ -128,7 +109,7 @@ class MyHomePage extends ConsumerWidget {
               ),
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stack) => Text(
-                "總残高: 0 $error USDC",
+                "總残高: 0 1231$error USDC",
                 style: GoogleFonts.delaGothicOne().copyWith(
                   fontSize: 20,
                 ),
