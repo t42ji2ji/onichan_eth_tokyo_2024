@@ -155,7 +155,7 @@ class _GetBalanceProviderElement
   String get address => (origin as GetBalanceProvider).address;
 }
 
-String _$getTokenBalanceHash() => r'4268727ee03e13ea1c3175429b2ce6c9839b8277';
+String _$getTokenBalanceHash() => r'03fab21232e57c48ca9b06280ff9d01d82f27ac5';
 
 /// See also [getTokenBalance].
 @ProviderFor(getTokenBalance)
@@ -299,5 +299,20 @@ class _GetTokenBalanceProviderElement
   @override
   String get tokenAddress => (origin as GetTokenBalanceProvider).tokenAddress;
 }
+
+String _$allOrdersHash() => r'd999976da445c0099c878b3664b9aa1ae16e6cc8';
+
+/// See also [allOrders].
+@ProviderFor(allOrders)
+final allOrdersProvider = AutoDisposeFutureProvider<List<Order>>.internal(
+  allOrders,
+  name: r'allOrdersProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$allOrdersHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef AllOrdersRef = AutoDisposeFutureProviderRef<List<Order>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -31,7 +31,12 @@ class Web3DartController extends _$Web3DartController {
   Web3Client web3Client({Rpc rpc = Rpc.eth}) {
     var sepoliaApiUrl = "https://eth-sepolia.api.onfinality.io/public";
     var ethApiUrl = "https://eth.llamarpc.com";
-    var url = rpc == Rpc.sepolia ? sepoliaApiUrl : ethApiUrl;
+    var scrollSepoliaApiUrl = "https://sepolia-rpc.scroll.io";
+    var url = rpc == Rpc.sepolia
+        ? sepoliaApiUrl
+        : rpc == Rpc.scrollSepolia
+            ? scrollSepoliaApiUrl
+            : ethApiUrl;
     var httpClient = Client();
     return Web3Client(url, httpClient);
   }
@@ -40,4 +45,5 @@ class Web3DartController extends _$Web3DartController {
 enum Rpc {
   sepolia,
   eth,
+  scrollSepolia,
 }

@@ -1,0 +1,280 @@
+const fiatOnrampAbi = '''
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_reclaimProofVerifier",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  { "type": "receive", "stateMutability": "payable" },
+  {
+    "type": "function",
+    "name": "_createOrder",
+    "inputs": [
+      { "name": "_token", "type": "address", "internalType": "address" },
+      { "name": "_amount", "type": "uint256", "internalType": "uint256" },
+      {
+        "name": "_conditionHash",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      { "name": "deadline", "type": "uint256", "internalType": "uint256" },
+      { "name": "v", "type": "uint8", "internalType": "uint8" },
+      { "name": "r", "type": "bytes32", "internalType": "bytes32" },
+      { "name": "s", "type": "bytes32", "internalType": "bytes32" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "activeOrderCount",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "allOrders",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple[]",
+        "internalType": "struct SellOrder[]",
+        "components": [
+          { "name": "orderId", "type": "uint256", "internalType": "uint256" },
+          { "name": "from", "type": "address", "internalType": "address" },
+          { "name": "token", "type": "address", "internalType": "address" },
+          { "name": "amount", "type": "uint256", "internalType": "uint256" },
+          {
+            "name": "conditionHash",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "createOrder",
+    "inputs": [
+      { "name": "_token", "type": "address", "internalType": "address" },
+      { "name": "_amount", "type": "uint256", "internalType": "uint256" },
+      { "name": "_conditionHash", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "fillOrder",
+    "inputs": [
+      { "name": "_orderId", "type": "uint256", "internalType": "uint256" },
+      {
+        "name": "proof",
+        "type": "tuple",
+        "internalType": "struct Proof",
+        "components": [
+          {
+            "name": "claimInfo",
+            "type": "tuple",
+            "internalType": "struct ClaimInfo",
+            "components": [
+              {
+                "name": "provider",
+                "type": "string",
+                "internalType": "string"
+              },
+              {
+                "name": "parameters",
+                "type": "string",
+                "internalType": "string"
+              },
+              { "name": "context", "type": "string", "internalType": "string" }
+            ]
+          },
+          {
+            "name": "signedClaim",
+            "type": "tuple",
+            "internalType": "struct SignedClaim",
+            "components": [
+              {
+                "name": "claim",
+                "type": "tuple",
+                "internalType": "struct CompleteClaimData",
+                "components": [
+                  {
+                    "name": "identifier",
+                    "type": "bytes32",
+                    "internalType": "bytes32"
+                  },
+                  {
+                    "name": "owner",
+                    "type": "address",
+                    "internalType": "address"
+                  },
+                  {
+                    "name": "timestampS",
+                    "type": "uint32",
+                    "internalType": "uint32"
+                  },
+                  {
+                    "name": "epoch",
+                    "type": "uint32",
+                    "internalType": "uint32"
+                  }
+                ]
+              },
+              {
+                "name": "signatures",
+                "type": "bytes[]",
+                "internalType": "bytes[]"
+              }
+            ]
+          }
+        ]
+      },
+      { "name": "_conditionHash", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "nextOrderId",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "orders",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [
+      { "name": "orderId", "type": "uint256", "internalType": "uint256" },
+      { "name": "from", "type": "address", "internalType": "address" },
+      { "name": "token", "type": "address", "internalType": "address" },
+      { "name": "amount", "type": "uint256", "internalType": "uint256" },
+      { "name": "conditionHash", "type": "uint256", "internalType": "uint256" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "reclaimProofVerifier",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IReclaimProofVerifier"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "OrderCreated",
+    "inputs": [
+      {
+        "name": "orderId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "from",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "token",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "conditionHash",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "OrderFilled",
+    "inputs": [
+      {
+        "name": "orderId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "from",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "token",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "conditionHash",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "error",
+    "name": "AddressEmptyCode",
+    "inputs": [
+      { "name": "target", "type": "address", "internalType": "address" }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "AddressInsufficientBalance",
+    "inputs": [
+      { "name": "account", "type": "address", "internalType": "address" }
+    ]
+  },
+  { "type": "error", "name": "FailedInnerCall", "inputs": [] },
+  {
+    "type": "error",
+    "name": "SafeERC20FailedOperation",
+    "inputs": [
+      { "name": "token", "type": "address", "internalType": "address" }
+    ]
+  }
+]
+''';

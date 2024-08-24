@@ -6,12 +6,6 @@ import 'package:onichan/controller/web3_service.dart';
 import 'package:onichan/pages/shop_screen.dart';
 import 'package:onichan/pd_utils.dart';
 
-typedef Order = (
-  BigInt amount,
-  String orderId,
-  String condition,
-);
-
 class MerchantScreen extends ConsumerWidget {
   const MerchantScreen({super.key});
 
@@ -21,48 +15,7 @@ class MerchantScreen extends ConsumerWidget {
         "0x63128AEaBd2b402d7eAAf14d0c486d0D850d72Dd",
         "0xdAC17F958D2ee523a2206206994597C13D831ec7"));
 
-    final orders = <Order>[
-      (
-        BigInt.from(100) * BigInt.from(10).pow(6),
-        '1',
-        '受取済み',
-      ),
-      (
-        BigInt.from(200) * BigInt.from(10).pow(6),
-        '2',
-        '未受取',
-      ),
-      (
-        BigInt.from(300) * BigInt.from(10).pow(6),
-        '3',
-        '未受取',
-      ),
-      (
-        BigInt.from(400) * BigInt.from(10).pow(6),
-        '4',
-        '未受取',
-      ),
-      (
-        BigInt.from(500) * BigInt.from(10).pow(6),
-        '5',
-        '未受取',
-      ),
-      (
-        BigInt.from(600) * BigInt.from(10).pow(6),
-        '6',
-        '未受取',
-      ),
-      (
-        BigInt.from(700) * BigInt.from(10).pow(6),
-        '7',
-        '未受取',
-      ),
-      (
-        BigInt.from(800) * BigInt.from(10).pow(6),
-        '8',
-        '未受取',
-      ),
-    ];
+    final allOrders = ref.watch(allOrdersProvider).valueOrNull ?? [];
 
     return Scaffold(
       body: SafeArea(
@@ -100,16 +53,16 @@ class MerchantScreen extends ConsumerWidget {
               h24,
               Expanded(
                 child: ListView.builder(
-                  itemCount: orders.length,
+                  itemCount: allOrders.length,
                   itemBuilder: (_, index) {
-                    final order = orders[index];
+                    final order = allOrders[index];
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ShopScreen(
-                              order.$1,
+                              order.amount,
                             ),
                           ),
                         );
@@ -127,13 +80,13 @@ class MerchantScreen extends ConsumerWidget {
                                   selectedColor: Colors.transparent,
                                   focusColor: Colors.transparent,
                                   title: Text(
-                                    "注文番号: ${order.$2}",
+                                    "注文番号: ${order.id}",
                                     style: GoogleFonts.delaGothicOne().copyWith(
                                       fontSize: 20,
                                     ),
                                   ),
                                   subtitle: Text(
-                                    "金額: ${order.$1 / BigInt.from(10).pow(6)} USDT\n状態: ${order.$3}",
+                                    "金額: ${order.amount / BigInt.from(10).pow(6)} USDT\n状態: 未受取",
                                     style: GoogleFonts.delaGothicOne().copyWith(
                                       fontSize: 16,
                                     ),

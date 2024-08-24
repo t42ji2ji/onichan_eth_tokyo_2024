@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onichan/controller/abi.dart';
 import 'package:onichan/controller/web3_contrller.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:web3dart/web3dart.dart';
@@ -45,4 +46,52 @@ FutureOr<String> getTokenBalance(
   );
 
   return ((balance[0] as BigInt) / BigInt.from(10).pow(6)).toStringAsFixed(3);
+}
+
+const fiatOnrampAddress = '0xd570bf4598d3ccf214e288dd92222b8bd3134984';
+const usdtAddress = '0xB06c44B2601AB296269dDC081492B266C49C6949';
+const usdcAddress = '0x7356f4cC77168d0e6f94F1d8E28aeA1316852c0d';
+
+class Order {
+  final BigInt id;
+  final String from;
+  final String token;
+  final BigInt amount;
+  final BigInt conditionHash;
+
+  Order({
+    required this.id,
+    required this.from,
+    required this.token,
+    required this.amount,
+    required this.conditionHash,
+  });
+}
+
+@riverpod
+FutureOr<List<Order>> allOrders(AllOrdersRef ref) async {
+  final client = ref
+      .read(web3DartControllerProvider.notifier)
+      .web3Client(rpc: Rpc.scrollSepolia);
+
+  final contract = DeployedContract(
+    ContractAbi.fromJson(fiatOnrampAbi, 'FiatOnramp'),
+    EthereumAddress.fromHex(fiatOnrampAddress),
+  );
+
+  final allOrders = (await client.call(
+    contract: contract,
+    function: contract.function('allOrders'),
+    params: [],
+  ))[0];
+
+  return allOrders
+      .map<Order>((e) => Order(
+            id: e[0],
+            from: (e[1] as EthereumAddress).hex,
+            token: (e[2] as EthereumAddress).hex,
+            amount: e[3],
+            conditionHash: e[4],
+          ))
+      .toList();
 }
