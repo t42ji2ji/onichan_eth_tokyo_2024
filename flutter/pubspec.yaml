@@ -48,6 +48,8 @@ dependencies:
   numeric_keyboard: ^1.1.0
   qr_code_scanner: ^1.0.1
   oktoast: ^3.4.0
+  google_fonts: ^6.2.1
+  text_to_speech: ^0.2.3
 
 dev_dependencies:
   flutter_test:
