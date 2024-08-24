@@ -51,6 +51,7 @@ dependencies:
   google_fonts: ^6.2.1
   text_to_speech: ^0.2.3
   reclaim_sdk: ^1.8.6
+  simple_circular_progress_bar: ^1.0.2
 
 dev_dependencies:
   flutter_test:

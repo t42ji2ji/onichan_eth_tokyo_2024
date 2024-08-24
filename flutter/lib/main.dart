@@ -114,10 +114,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         margin: pdH20,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: colorGreen,
-                            width: 3,
-                          ),
                         ),
                         child: Text(
                           'よし、心配しないで。これからお兄ちゃんがちゃんと助けてあげるからね。',
@@ -172,9 +168,8 @@ class DefautBtn extends ConsumerWidget {
         child: Text(
           text,
           style: GoogleFonts.lilitaOne().copyWith(
-            fontSize: 14,
+            fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
           ),
           textAlign: TextAlign.center,
         ),
