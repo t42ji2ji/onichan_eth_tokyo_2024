@@ -87,7 +87,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                       "すごい",
                       style: GoogleFonts.delaGothicOne().copyWith(
                         fontSize: 30,
-                        color: Colors.black,
+                        color: colorBlack,
                       ),
                       textAlign: TextAlign.center,
                     )

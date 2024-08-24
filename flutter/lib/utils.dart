@@ -7,7 +7,7 @@ void okToast(String text) {
     position: ToastPosition.bottom,
     radius: 10.0,
     textStyle: const TextStyle(
-      fontSize: 14.0,
+      fontSize: 20.0,
       color: Colors.white,
     ),
   );

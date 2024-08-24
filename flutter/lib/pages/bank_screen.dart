@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:onichan/pages/proof_screen.dart';
 import 'package:onichan/pd_utils.dart';
+import 'package:onichan/utils.dart';
 
 class BankScreen extends ConsumerWidget {
   const BankScreen({super.key});
@@ -27,7 +29,12 @@ class BankScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Image(image: AssetImage('assets/images/bank.png')),
+                const Image(
+                  image: AssetImage(
+                    'assets/neco.png',
+                  ),
+                  height: 160,
+                ),
                 Text(
                   "銀行振込",
                   style: GoogleFonts.delaGothicOne().copyWith(
@@ -49,12 +56,32 @@ class BankScreen extends ConsumerWidget {
                       ),
                       FittedBox(
                         fit: BoxFit.scaleDown,
-                        child: Text(
-                          "0000-1234-5678-0000",
-                          style: GoogleFonts.delaGothicOne().copyWith(
-                            fontSize: 60,
-                          ),
-                          textAlign: TextAlign.center,
+                        child: Row(
+                          children: [
+                            Text(
+                              "0000-1234-5678-0000",
+                              style: GoogleFonts.delaGothicOne().copyWith(
+                                fontSize: 20,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            w8,
+                            GestureDetector(
+                              onTap: () {
+                                Clipboard.setData(
+                                  const ClipboardData(
+                                    text: "0000-1234-5678-0000",
+                                  ),
+                                );
+                                HapticFeedback.lightImpact();
+                                okToast("コピーしました");
+                              },
+                              child: const Icon(
+                                Icons.copy,
+                                size: 32,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       FittedBox(
