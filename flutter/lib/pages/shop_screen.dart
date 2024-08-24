@@ -8,11 +8,12 @@ import 'package:onichan/color_utils.dart';
 import 'package:onichan/pages/amount_screen.dart';
 import 'package:onichan/pages/bank_screen.dart';
 import 'package:onichan/pd_utils.dart';
+import 'package:onichan/types/order.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ShopScreen extends ConsumerStatefulWidget {
-  const ShopScreen(this.maxAmount, {super.key});
-  final BigInt maxAmount;
+  const ShopScreen(this.order, {super.key});
+  final Order order;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ShopScreenState();
@@ -44,7 +45,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
   ) {
     // final res = ref.watch(
     //     getBalanceProvider("0x63128AEaBd2b402d7eAAf14d0c486d0D850d72Dd"));
-    final maxAmount = widget.maxAmount / BigInt.from(10).pow(6);
+    final maxAmount = widget.order.amount / BigInt.from(10).pow(6);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -258,7 +259,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BankScreen(amount.toBigInt()),
+                        builder: (context) => BankScreen(widget.order),
                       ),
                     );
                   },

@@ -16,6 +16,8 @@ class MerchantScreen extends ConsumerWidget {
         "0xdAC17F958D2ee523a2206206994597C13D831ec7"));
 
     final allOrders = ref.watch(allOrdersProvider).valueOrNull ?? [];
+    final totalAmount =
+        allOrders.fold(BigInt.from(0), (sum, order) => sum + order.amount);
 
     return Scaffold(
       body: SafeArea(
@@ -30,7 +32,7 @@ class MerchantScreen extends ConsumerWidget {
                     child: tokenRes.when(
                       data: (data) {
                         return Text(
-                          "残高: $data USDT",
+                          "残高: ${totalAmount / BigInt.from(10).pow(6)} USDT",
                           style: GoogleFonts.delaGothicOne().copyWith(
                             fontSize: 20,
                           ),
@@ -41,9 +43,8 @@ class MerchantScreen extends ConsumerWidget {
                           const Center(child: CircularProgressIndicator()),
                       error: (error, stack) => Text(
                         "エラー: $error",
-                        style: GoogleFonts.delaGothicOne().copyWith(
-                          fontSize: 20,
-                        ),
+                        style:
+                            GoogleFonts.delaGothicOne().copyWith(fontSize: 20),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -61,9 +62,7 @@ class MerchantScreen extends ConsumerWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ShopScreen(
-                              order.amount,
-                            ),
+                            builder: (context) => ShopScreen(order),
                           ),
                         );
                       },
