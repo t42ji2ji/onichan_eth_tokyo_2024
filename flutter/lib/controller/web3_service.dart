@@ -48,7 +48,7 @@ FutureOr<String> getTokenBalance(
     params: [EthereumAddress.fromHex(address)],
   );
 
-  return ((balance[0] as BigInt) / BigInt.from(10).pow(6)).toStringAsFixed(3);
+  return ((balance[0] as BigInt) / BigInt.from(10).pow(6)).toStringAsFixed(1);
 }
 
 const fiatOnrampAddress = '0xd570bf4598d3ccf214e288dd92222b8bd3134984';

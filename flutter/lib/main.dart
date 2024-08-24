@@ -91,7 +91,7 @@ class MyHomePage extends ConsumerWidget {
               ),
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stack) => Text(
-                "總残高: 0 12312$error USDT",
+                "$error",
                 style: GoogleFonts.delaGothicOne().copyWith(
                   fontSize: 20,
                 ),
@@ -109,7 +109,7 @@ class MyHomePage extends ConsumerWidget {
               ),
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stack) => Text(
-                "總残高: 0 1231$error USDC",
+                "$error",
                 style: GoogleFonts.delaGothicOne().copyWith(
                   fontSize: 20,
                 ),

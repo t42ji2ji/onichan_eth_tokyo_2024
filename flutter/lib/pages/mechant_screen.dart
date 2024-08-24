@@ -72,7 +72,7 @@ class MerchantScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   subtitle: Text(
-                                    "金額: ${order.amount / BigInt.from(10).pow(6)} ${order.symbol}\n状態: 未受取",
+                                    "金額: ${(order.amount / BigInt.from(10).pow(6)).toStringAsFixed(1)} ${order.symbol}\n状態: 未受取",
                                     style: GoogleFonts.delaGothicOne().copyWith(
                                       fontSize: 16,
                                     ),
@@ -113,7 +113,7 @@ class MerchantScreen extends ConsumerWidget {
                   w8,
                   Expanded(
                     child: Text(
-                      "總残高: ${totalAmount / BigInt.from(10).pow(6)} USDT",
+                      "總残高: ${(totalAmount / BigInt.from(10).pow(6)).toStringAsFixed(1)} USDT",
                       style: GoogleFonts.delaGothicOne().copyWith(
                         fontSize: 20,
                       ),
@@ -141,6 +141,9 @@ class CreateOrderDialog extends ConsumerStatefulWidget {
 class _CreateOrderDialogState extends ConsumerState<CreateOrderDialog> {
   double value = 0.0;
   bool isUsdt = true;
+  bool isLoading = false;
+  bool isDone = false;
+
   @override
   Widget build(
     BuildContext context,
@@ -154,10 +157,10 @@ class _CreateOrderDialogState extends ConsumerState<CreateOrderDialog> {
         padding: pd12,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "注文を作成",
+              "暗号資産を売る",
               style: GoogleFonts.delaGothicOne().copyWith(
                 fontSize: 24,
               ),
@@ -171,14 +174,7 @@ class _CreateOrderDialogState extends ConsumerState<CreateOrderDialog> {
               ),
             ),
             Text(
-              isUsdt ? "USDT" : "USDC",
-              style: GoogleFonts.delaGothicOne().copyWith(
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.start,
-            ),
-            Text(
-              value.toStringAsFixed(3),
+              value.toStringAsFixed(1),
               style: GoogleFonts.delaGothicOne().copyWith(
                 fontSize: 32,
               ),
@@ -200,6 +196,7 @@ class _CreateOrderDialogState extends ConsumerState<CreateOrderDialog> {
                       HapticFeedback.lightImpact();
                       setState(() {
                         isUsdt = value;
+                        this.value = 0;
                       });
                     }),
                 Text(
@@ -227,33 +224,81 @@ class _CreateOrderDialogState extends ConsumerState<CreateOrderDialog> {
               padding: const EdgeInsets.all(8.0),
               alignment: Alignment.bottomCenter,
               child: GestureDetector(
-                onTap: () {},
+                onTap: (isLoading || isDone || value == 0.0)
+                    ? null
+                    : () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        try {
+                          await ref
+                              .read(web3DartControllerProvider.notifier)
+                              .deposit(
+                                BigInt.from(value * 1000000),
+                                isUsdt ? usdtAddress : usdcAddress,
+                              );
+                          setState(() {
+                            isLoading = false;
+                            isDone = true;
+                          });
+                          await Future.delayed(const Duration(seconds: 3));
+                          ref.invalidate(allOrdersProvider);
+                          if (mounted) {
+                            Navigator.of(context).pop();
+                          }
+                        } catch (e) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          print('error: $e');
+                          // Handle error here
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Error: ${e.toString()}')),
+                          );
+                        }
+                      },
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.green,
+                    color: isDone
+                        ? Colors.blue
+                        : isLoading
+                            ? Colors.grey
+                            : (value == 0.0 ? Colors.grey : Colors.green),
                   ),
                   padding: pdW12,
-                  child: Text(
-                    "Add Liquidity",
-                    style: GoogleFonts.delaGothicOne().copyWith(
-                      fontSize: 42,
-                      height: 1,
-                    ),
-                    textAlign: TextAlign.center,
-                  )
-                      .animate(
-                          onPlay: (controller) =>
-                              controller.repeat(reverse: true))
-                      .scale(
-                        curve: Curves.easeInOut,
-                        begin: const Offset(1.0, 1.0),
-                        end: const Offset(1.1, 1.1),
-                        duration: const Duration(
-                          milliseconds: 300,
+                  child: isLoading
+                      ? Container(
+                          padding: pd12,
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : SizedBox(
+                          height: 60,
+                          child: Text(
+                            isDone ? "完了" : "売る",
+                            style: GoogleFonts.delaGothicOne().copyWith(
+                              fontSize: 42,
+                              height: 1.3,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                      ),
-                ),
+                ).animate(
+                    onPlay: (controller) => controller.repeat(reverse: true))
+                  ..scale(
+                    curve: Curves.easeInOut,
+                    begin: const Offset(1.0, 1.0),
+                    end: isLoading || isDone
+                        ? const Offset(1.0, 1.0)
+                        : const Offset(1.1, 1.1),
+                    duration: const Duration(
+                      milliseconds: 300,
+                    ),
+                  ),
               ),
             ),
           ],

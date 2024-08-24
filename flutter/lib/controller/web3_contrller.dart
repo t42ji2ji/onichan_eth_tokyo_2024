@@ -1,4 +1,6 @@
 import 'package:http/http.dart';
+import 'package:onichan/controller/abi.dart';
+import 'package:onichan/controller/web3_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -13,7 +15,6 @@ typedef Vault = ({
 class Web3DartController extends _$Web3DartController {
   @override
   Vault build() {
-    // Or generate a new key randomly
     Credentials cred = EthPrivateKey.fromHex(
         '0xbc3d9a9557fda31dc4bfba1e2597808f2990f46b6cc321c45555c3482ab744e8');
 
@@ -37,6 +38,28 @@ class Web3DartController extends _$Web3DartController {
             : ethApiUrl;
     var httpClient = Client();
     return Web3Client(url, httpClient);
+  }
+
+  Future<void> deposit(BigInt value, String token) async {
+    var client = web3Client(rpc: Rpc.scrollSepolia);
+    Credentials cred = EthPrivateKey.fromHex(
+        '0xbc3d9a9557fda31dc4bfba1e2597808f2990f46b6cc321c45555c3482ab744e8');
+    final contract = DeployedContract(
+      ContractAbi.fromJson(fiatOnrampAbi, 'FiatOnramp'),
+      EthereumAddress.fromHex(fiatOnrampAddress),
+    );
+    final function = contract.function('createOrder');
+    final params = [EthereumAddress.fromHex(token), value, BigInt.from(5)];
+    final result = await client.sendTransaction(
+      cred,
+      Transaction.callContract(
+        contract: contract,
+        function: function,
+        parameters: params,
+      ),
+      chainId: 534351,
+    );
+    await Future.delayed(const Duration(milliseconds: 1500));
   }
 }
 
