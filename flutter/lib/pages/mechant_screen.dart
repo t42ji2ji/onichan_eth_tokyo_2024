@@ -103,55 +103,58 @@ class MerchantScreen extends ConsumerWidget {
                   itemCount: orders.length,
                   itemBuilder: (_, index) {
                     final order = orders[index];
-                    return Card(
-                      elevation: 30,
-                      shadowColor: colorBackGround.withOpacity(0.4),
-                      child: Padding(
-                        padding: pd12,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: ListTile(
-                                splashColor: Colors.transparent,
-                                selectedColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                title: Text(
-                                  "注文番号: ${orders[index].$2}",
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ShopScreen(
+                              order.$1,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        elevation: 30,
+                        shadowColor: colorBackGround.withOpacity(0.4),
+                        child: Padding(
+                          padding: pd12,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: ListTile(
+                                  splashColor: Colors.transparent,
+                                  selectedColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  title: Text(
+                                    "注文番号: ${order.$2}",
+                                    style: GoogleFonts.delaGothicOne().copyWith(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    "金額: ${order.$1 / BigInt.from(10).pow(6)} USDT\n状態: ${order.$3}",
+                                    style: GoogleFonts.delaGothicOne().copyWith(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  onTap: () {},
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: colorGreen,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  "注文",
                                   style: GoogleFonts.delaGothicOne().copyWith(
                                     fontSize: 20,
                                   ),
                                 ),
-                                subtitle: Text(
-                                  "金額: ${orders[index].$1 / BigInt.from(10).pow(6)} USDT\n状態: ${orders[index].$3}",
-                                  style: GoogleFonts.delaGothicOne().copyWith(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ShopScreen(
-                                        orders[index].$1,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: colorGreen,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                "注文",
-                                style: GoogleFonts.delaGothicOne().copyWith(
-                                  fontSize: 20,
-                                ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     );

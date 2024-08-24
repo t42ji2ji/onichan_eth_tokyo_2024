@@ -76,6 +76,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
             // ),
 
             h24,
+
             Stack(
               children: [
                 Positioned(
@@ -168,15 +169,33 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
               ),
               textAlign: TextAlign.center,
             ),
+            Text(
+              "max: $maxAmount USDT",
+              style: GoogleFonts.delaGothicOne().copyWith(
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
+            ),
             Container(
               padding: const EdgeInsets.all(8.0),
               alignment: Alignment.topCenter,
-              child: Text(
-                "${(value).toStringAsFixed(2)} USDT = ¥ ${(value * 144).toStringAsFixed(2)}",
-                style: GoogleFonts.delaGothicOne().copyWith(
-                  fontSize: 20,
-                ),
-                textAlign: TextAlign.center,
+              child: Column(
+                children: [
+                  Text(
+                    "${(value).toStringAsFixed(2)} USDT",
+                    style: GoogleFonts.delaGothicOne().copyWith(
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    "= ¥ ${(value * 144).toStringAsFixed(2)}",
+                    style: GoogleFonts.delaGothicOne().copyWith(
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ),
 
@@ -200,7 +219,12 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                       thumbColor: colorGreen,
                       activeColor: colorGreen.withOpacity(0.5),
                       onChanged: (value) {
-                        HapticFeedback.lightImpact();
+                        if (value == maxAmount) {
+                          SystemSound.play(SystemSoundType.alert);
+                          HapticFeedback.heavyImpact();
+                        } else {
+                          HapticFeedback.lightImpact();
+                        }
                         setState(() {
                           this.value = value;
                         });

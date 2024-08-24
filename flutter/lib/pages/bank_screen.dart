@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:onichan/pages/proof_screen.dart';
+import 'package:onichan/pd_utils.dart';
 
 class BankScreen extends ConsumerWidget {
   const BankScreen({super.key});
@@ -21,76 +22,77 @@ class BankScreen extends ConsumerWidget {
               ),
             );
           },
-          child: Center(
+          child: Padding(
+            padding: pd24,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Image.asset(
-                  'assets/note.png',
-                  width: 150, // or BoxFit.contain, BoxFit.fill, etc.
-                ),
+                const Image(image: AssetImage('assets/images/bank.png')),
                 Text(
-                  "TRANSFER TO BANK",
+                  "銀行振込",
                   style: GoogleFonts.delaGothicOne().copyWith(
                     fontSize: 24,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      "0000-1234-5678-0000",
-                      style: GoogleFonts.delaGothicOne().copyWith(
-                        fontSize: 60,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "銀行口座",
+                        style: GoogleFonts.delaGothicOne().copyWith(
+                          fontSize: 24,
+                        ),
+                        textAlign: TextAlign.start,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          "0000-1234-5678-0000",
+                          style: GoogleFonts.delaGothicOne().copyWith(
+                            fontSize: 60,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      FittedBox(
+                        child: Text(
+                          "¥112,500",
+                          style: GoogleFonts.delaGothicOne().copyWith(
+                            fontSize: 100,
+                            color: const Color(
+                                0xFFb52b12), // You can start with a large font size
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      FittedBox(
+                        child: Text(
+                          "指定された銀行口座に、ぴったりの金額を送金してね。",
+                          style: GoogleFonts.lilitaOne().copyWith(
+                            fontSize:
+                                100, // You can start with a large font size
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          "もう一度確認してね。",
+                          style: GoogleFonts.lilitaOne().copyWith(
+                            fontSize:
+                                100, // You can start with a large font size
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      "¥112,500",
-                      style: GoogleFonts.delaGothicOne().copyWith(
-                        fontSize: 100,
-                        color: const Color(
-                            0xFFb52b12), // You can start with a large font size
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      "Send the exact amount to the specified bank account.",
-                      style: GoogleFonts.delaGothicOne().copyWith(
-                        fontSize: 100, // You can start with a large font size
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      "Double check you are sending to the correct bank account.",
-                      style: GoogleFonts.delaGothicOne().copyWith(
-                        fontSize: 100, // You can start with a large font size
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-                const Spacer(),
                 ClipOval(
                   child: Container(
                     width: 160.0, // Set the width of the circle
