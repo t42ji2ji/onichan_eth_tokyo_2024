@@ -120,12 +120,13 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                         ),
                       ),
                 ),
-                Center(
-                  child: Image.asset(
-                    'assets/face.png',
-                    width: 150,
-                  ),
-                )
+                if (value > 0)
+                  Center(
+                    child: Image.asset(
+                      'assets/face.png',
+                      width: 150,
+                    ),
+                  )
               ],
             ),
             Text(
