@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:onichan/pages/success_screen.dart';
-import 'package:onichan/reclaim.dart';
-import 'package:onichan/types/order.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:onichan/pages/success_screen.dart';
 import 'package:onichan/pd_utils.dart';
+import 'package:onichan/reclaim.dart';
+import 'package:onichan/types/order.dart';
 import 'package:onichan/utils.dart';
 
 class BankScreen extends ConsumerStatefulWidget {
@@ -51,7 +51,6 @@ class _BankScreenState extends ConsumerState<BankScreen> {
                       style: GoogleFonts.delaGothicOne().copyWith(
                         fontSize: 24,
                       ),
-                      textAlign: TextAlign.start,
                     ),
                     FittedBox(
                       fit: BoxFit.scaleDown,
@@ -123,7 +122,7 @@ class _BankScreenState extends ConsumerState<BankScreen> {
                     loading = true;
                   });
                   startVerificationFlow();
-                  await Future.delayed(const Duration(seconds: 30));
+                  await Future.delayed(const Duration(seconds: 5));
                   Navigator.push(
                     context,
                     MaterialPageRoute(
