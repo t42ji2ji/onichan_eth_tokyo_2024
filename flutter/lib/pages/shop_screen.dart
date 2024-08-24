@@ -257,7 +257,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BankScreen(widget.order),
+                        builder: (context) => BankScreen(order: widget.order),
                       ),
                     );
                   },

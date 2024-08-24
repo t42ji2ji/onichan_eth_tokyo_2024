@@ -11,10 +11,6 @@ class MerchantScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tokenRes = ref.watch(getTokenBalanceProvider(
-        "0x63128AEaBd2b402d7eAAf14d0c486d0D850d72Dd",
-        "0xdAC17F958D2ee523a2206206994597C13D831ec7"));
-
     final allOrders = ref.watch(allOrdersProvider).valueOrNull ?? [];
     final totalAmount =
         allOrders.fold(BigInt.from(0), (sum, order) => sum + order.amount);
@@ -29,24 +25,12 @@ class MerchantScreen extends ConsumerWidget {
                 children: [
                   Image.asset('assets/onii.png', width: 30),
                   Expanded(
-                    child: tokenRes.when(
-                      data: (data) {
-                        return Text(
-                          "残高: ${totalAmount / BigInt.from(10).pow(6)} USDT",
-                          style: GoogleFonts.delaGothicOne().copyWith(
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.center,
-                        );
-                      },
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
-                      error: (error, stack) => Text(
-                        "エラー: $error",
-                        style:
-                            GoogleFonts.delaGothicOne().copyWith(fontSize: 20),
-                        textAlign: TextAlign.center,
+                    child: Text(
+                      "残高: ${totalAmount / BigInt.from(10).pow(6)} USDT",
+                      style: GoogleFonts.delaGothicOne().copyWith(
+                        fontSize: 20,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ],
