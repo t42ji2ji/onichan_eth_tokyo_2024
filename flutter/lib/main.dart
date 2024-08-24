@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:onichan/color_utils.dart';
+import 'package:onichan/pages/shop_screen.dart';
 import 'package:onichan/pd_utils.dart';
 import 'package:onichan/utils.dart';
 import 'package:rive/rive.dart';
@@ -22,8 +24,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 255, 249, 204)),
+          colorScheme: ColorScheme.fromSeed(seedColor: colorBackGround),
           useMaterial3: true,
         ),
         home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -114,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: const Color.fromARGB(255, 57, 95, 68),
+                            color: colorGreen,
                             width: 3,
                           ),
                         ),
@@ -132,7 +133,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   w12,
                   DefautBtn(
                     text: "GO",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ShopScreen(),
+                        ),
+                      );
+                    },
                   )
                 ],
               ),
@@ -159,7 +167,7 @@ class DefautBtn extends ConsumerWidget {
         margin: pdH20,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: const Color.fromARGB(255, 57, 95, 68),
+          color: colorGreen,
         ),
         child: Text(
           text,
