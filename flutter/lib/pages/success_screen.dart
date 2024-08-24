@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:onichan/pd_utils.dart';
 import 'package:onichan/types/order.dart';
+import 'package:onichan/utils.dart';
 
 class SuccessScreen extends StatefulWidget {
   const SuccessScreen({super.key, required this.order});
@@ -32,12 +34,15 @@ class _SuccessScreenState extends State<SuccessScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (isSuccess) const SuccessWidget() else const LoadingWidget(),
-          ],
+        child: Padding(
+          padding: pd24,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isSuccess) const SuccessWidget() else const LoadingWidget(),
+            ],
+          ),
         ),
       ),
     );
@@ -63,12 +68,14 @@ class _SuccessWidgetState extends ConsumerState<SuccessWidget> {
           )
               .animate()
               .scale(
-                curve: Curves.bounceInOut,
+                curve: Curves.easeInOut,
                 begin: const Offset(1, 1),
+                delay: const Duration(milliseconds: 300),
                 duration: const Duration(milliseconds: 300),
                 end: const Offset(1.2, 1.2),
               )
               .fadeIn(),
+          h12,
           h12,
           Text(
             "お支払いが完了しました！",
@@ -76,6 +83,39 @@ class _SuccessWidgetState extends ConsumerState<SuccessWidget> {
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
+          ),
+          h24,
+          Text(
+            "TxHash",
+            style: GoogleFonts.lilitaOne().copyWith(
+              fontSize: 24,
+            ),
+          ),
+          h12,
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "0x0a7a51B8887ca23B13d692eC8Cb1CCa4100eda4B",
+                  style: GoogleFonts.lilitaOne().copyWith(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              w24,
+              GestureDetector(
+                onTap: () {
+                  Clipboard.setData(
+                    const ClipboardData(
+                      text: "0x0a7a51B8887ca23B13d692eC8Cb1CCa4100eda4B",
+                    ),
+                  );
+                  okToast("コピーしました");
+                },
+                child: const Icon(Icons.copy),
+              ),
+            ],
           ),
         ],
       ),
