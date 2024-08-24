@@ -40,7 +40,10 @@ class _SuccessScreenState extends State<SuccessScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (isSuccess) const SuccessWidget() else const LoadingWidget(),
+              if (isSuccess)
+                SuccessWidget(order: widget.order)
+              else
+                const LoadingWidget(),
             ],
           ),
         ),
@@ -50,7 +53,8 @@ class _SuccessScreenState extends State<SuccessScreen> {
 }
 
 class SuccessWidget extends ConsumerStatefulWidget {
-  const SuccessWidget({super.key});
+  const SuccessWidget({super.key, required this.order});
+  final Order order;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SuccessWidgetState();
@@ -60,6 +64,7 @@ class _SuccessWidgetState extends ConsumerState<SuccessWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image.asset(
           'assets/success.png',
@@ -75,31 +80,22 @@ class _SuccessWidgetState extends ConsumerState<SuccessWidget> {
             )
             .fadeIn(),
         h12,
-        h12,
         Text(
-          "お支払いが完了しました！",
+          "${widget.order.amount / BigInt.from(10).pow(6)} ${widget.order.symbol} の請求に成功しました！",
           style: GoogleFonts.lilitaOne().copyWith(
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
-        ),
-        h24,
-        Text(
-          "TxHash",
-          style: GoogleFonts.lilitaOne().copyWith(
-            fontSize: 24,
-          ),
+          textAlign: TextAlign.center,
         ),
         h12,
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: Text(
-                "0x0a7a51B8887ca23B13d692eC8Cb1CCa4100eda4B",
-                style: GoogleFonts.lilitaOne().copyWith(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+            Text(
+              "Tx Hash:  0x0a7a...da4B",
+              style: GoogleFonts.lilitaOne().copyWith(
+                fontSize: 24,
               ),
             ),
             w24,
