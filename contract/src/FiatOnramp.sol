@@ -13,6 +13,7 @@ contract FiatOnramp {
     mapping(uint256 => SellOrder) public orders;
 
     uint256 public nextOrderId;
+    uint256 public activeOrderCount;
 
     event OrderCreated(
         uint256 indexed orderId,
@@ -32,7 +33,10 @@ contract FiatOnramp {
     constructor(address _reclaimProofVerifier) {
         reclaimProofVerifier = IReclaimProofVerifier(_reclaimProofVerifier);
         nextOrderId = 1;
+        activeOrderCount = 0;
     }
+
+    receive() external payable {}
 
     function createOrder(
         address _token,
@@ -40,6 +44,18 @@ contract FiatOnramp {
         uint256 _conditionHash
     ) external {
         _createOrder(_token, _amount, _conditionHash);
+    }
+
+    function allOrders() external view returns (SellOrder[] memory) {
+        SellOrder[] memory _orders = new SellOrder[](activeOrderCount);
+        uint256 index = 0;
+        for (uint256 i = 1; i < nextOrderId; i++) {
+            if (orders[i].from != address(0)) {
+                _orders[index] = orders[i];
+                index++;
+            }
+        }
+        return _orders;
     }
 
     function _createOrder(
@@ -73,6 +89,7 @@ contract FiatOnramp {
         IERC20(_token).safeTransferFrom(msg.sender, address(this), _amount);
 
         SellOrder memory order = SellOrder({
+            orderId: nextOrderId,
             from: msg.sender,
             token: _token,
             amount: _amount,
@@ -87,6 +104,7 @@ contract FiatOnramp {
             _conditionHash
         );
         nextOrderId++;
+        activeOrderCount++;
     }
 
     function fillOrder(
@@ -104,8 +122,12 @@ contract FiatOnramp {
             reclaimProofVerifier.verifyProof(proof),
             "FiatOnramp: invalid proof"
         );
-        IERC20(order.token).safeTransfer(msg.sender, order.amount);
+
         delete orders[_orderId];
+        activeOrderCount--;
+
+        IERC20(order.token).safeTransfer(msg.sender, order.amount);
+
         emit OrderFilled(
             _orderId,
             order.from,
@@ -114,6 +136,4 @@ contract FiatOnramp {
             _conditionHash
         );
     }
-
-    receive() external payable {}
 }

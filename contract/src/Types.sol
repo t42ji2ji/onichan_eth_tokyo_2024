@@ -2,6 +2,7 @@
 pragma solidity ^0.8.12;
 
 struct SellOrder {
+    uint256 orderId;
     address from;
     address token;
     uint256 amount;
