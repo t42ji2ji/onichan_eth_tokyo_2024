@@ -7,7 +7,8 @@ import 'package:onichan/pd_utils.dart';
 import 'package:onichan/utils.dart';
 
 class BankScreen extends ConsumerWidget {
-  const BankScreen({super.key});
+  const BankScreen(this.maxAmount, {super.key});
+  final BigInt maxAmount;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -86,7 +87,7 @@ class BankScreen extends ConsumerWidget {
                       ),
                       FittedBox(
                         child: Text(
-                          "¥112,500",
+                          "¥${(maxAmount / BigInt.from(10).pow(6)).toStringAsFixed(4)}",
                           style: GoogleFonts.delaGothicOne().copyWith(
                             fontSize: 100,
                             color: const Color(

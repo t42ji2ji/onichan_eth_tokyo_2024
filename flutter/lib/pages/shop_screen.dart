@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -249,10 +250,15 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                 },
                 child: GestureDetector(
                   onTap: () {
+                    final amount = (Decimal.parse(value.toString()) *
+                            Decimal.fromBigInt(BigInt.from(10).pow(6))) *
+                        Decimal.fromInt(144);
+
+                    debugPrint('=======amount : $amount=========');
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const BankScreen(),
+                        builder: (context) => BankScreen(amount.toBigInt()),
                       ),
                     );
                   },

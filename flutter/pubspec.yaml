@@ -53,6 +53,7 @@ dependencies:
   reclaim_sdk: ^1.8.6
   simple_circular_progress_bar: ^1.0.2
   percent_indicator: ^4.2.3
+  decimal: ^3.0.2
 
 dev_dependencies:
   flutter_test:
