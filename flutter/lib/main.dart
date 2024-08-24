@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:onichan/color_utils.dart';
-import 'package:onichan/controller/web3_contrller.dart';
 import 'package:onichan/controller/web3_service.dart';
 import 'package:onichan/pages/mechant_screen.dart';
 import 'package:onichan/pd_utils.dart';
@@ -101,11 +99,7 @@ class MyHomePage extends ConsumerWidget {
               ),
             ),
             GestureDetector(
-              onTap: () async {
-                await dotenv.load(fileName: ".env");
-
-                final z = ref.read(web3DartControllerProvider);
-              },
+              onTap: () async {},
               child: Container(
                 alignment: Alignment.bottomCenter,
                 padding: pdW24H16,
