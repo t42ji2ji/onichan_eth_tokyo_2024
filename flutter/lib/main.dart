@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:onichan/color_utils.dart';
 import 'package:onichan/pages/mechant_screen.dart';
-import 'package:onichan/pages/shop_screen.dart';
 import 'package:onichan/pd_utils.dart';
 import 'package:onichan/utils.dart';
 import 'package:rive/rive.dart';
@@ -24,6 +23,7 @@ class MyApp extends StatelessWidget {
     return OKToast(
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: colorBackGround),
           useMaterial3: true,
