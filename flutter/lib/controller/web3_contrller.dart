@@ -16,15 +16,15 @@ class Web3DartController extends _$Web3DartController {
   @override
   Vault build() {
     // Or generate a new key randomly
-    var rng = Random.secure();
-    Credentials randomCred = EthPrivateKey.createRandom(rng);
+    Credentials cred = EthPrivateKey.fromHex(
+        '0xbc3d9a9557fda31dc4bfba1e2597808f2990f46b6cc321c45555c3482ab744e8');
 
     // In either way, the library can derive the public key and the address
     // from a private key:
-    var address = randomCred.address;
+    var address = cred.address;
     return (
       address: address.hex,
-      privateKey: randomCred.toString(),
+      privateKey: cred.toString(),
     );
   }
 
