@@ -7,7 +7,7 @@ part of 'web3_contrller.dart';
 // **************************************************************************
 
 String _$web3DartControllerHash() =>
-    r'9894cfc25b52ec5e0e4e5809c41fdc24bb68def9';
+    r'24cc1deed288b6f698349b20b1b57190fd6f05d1';
 
 /// See also [Web3DartController].
 @ProviderFor(Web3DartController)

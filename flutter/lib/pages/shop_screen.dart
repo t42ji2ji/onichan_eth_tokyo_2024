@@ -10,7 +10,8 @@ import 'package:onichan/pd_utils.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ShopScreen extends ConsumerStatefulWidget {
-  const ShopScreen({super.key});
+  const ShopScreen(this.maxAmount, {super.key});
+  final BigInt maxAmount;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ShopScreenState();
@@ -31,9 +32,18 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(
     BuildContext context,
   ) {
+    // final res = ref.watch(
+    //     getBalanceProvider("0x63128AEaBd2b402d7eAAf14d0c486d0D850d72Dd"));
+    final maxAmount = widget.maxAmount / BigInt.from(10).pow(6);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -45,12 +55,33 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
             //   "assets/usdt.png",
             //   height: 100,
             // ),
+            // res.when(
+            //   data: (data) {
+            //     return Text(
+            //       "残高: $data ETH",
+            //       style: GoogleFonts.delaGothicOne().copyWith(
+            //         fontSize: 20,
+            //       ),
+            //       textAlign: TextAlign.center,
+            //     );
+            //   },
+            //   loading: () => const Center(child: CircularProgressIndicator()),
+            //   error: (error, stack) => Text(
+            //     "エラー: $error",
+            //     style: GoogleFonts.delaGothicOne().copyWith(
+            //       fontSize: 20,
+            //     ),
+            //     textAlign: TextAlign.center,
+            //   ),
+            // ),
+
+            h24,
             Stack(
               children: [
                 Positioned(
                   right: 20,
                   child: Opacity(
-                    opacity: value < 100 ? 0 : 1,
+                    opacity: value < maxAmount ? 0 : 1,
                     child: Text(
                       "すごい",
                       style: GoogleFonts.delaGothicOne().copyWith(
@@ -102,7 +133,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                   child: CircularPercentIndicator(
                     radius: 75.0,
                     lineWidth: 6.0,
-                    percent: value / 100,
+                    percent: value / maxAmount,
                     progressColor: Colors.black,
                     backgroundColor: Colors.transparent,
                   )
@@ -113,7 +144,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                       .scale(
                         curve: Curves.easeInOut,
                         begin: const Offset(1.0, 1.0),
-                        end: value < 100
+                        end: value < maxAmount
                             ? const Offset(1.0, 1.0)
                             : const Offset(1.1, 1.1),
                         duration: const Duration(
@@ -164,7 +195,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                     ),
                     Slider(
                       min: 0.0,
-                      max: 100.0,
+                      max: maxAmount,
                       value: value,
                       thumbColor: colorGreen,
                       activeColor: colorGreen.withOpacity(0.5),

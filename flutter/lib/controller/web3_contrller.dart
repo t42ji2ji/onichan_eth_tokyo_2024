@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:http/http.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -26,4 +27,17 @@ class Web3DartController extends _$Web3DartController {
       privateKey: randomCred.toString(),
     );
   }
+
+  Web3Client web3Client({Rpc rpc = Rpc.eth}) {
+    var sepoliaApiUrl = "https://eth-sepolia.api.onfinality.io/public";
+    var ethApiUrl = "https://eth.llamarpc.com";
+    var url = rpc == Rpc.sepolia ? sepoliaApiUrl : ethApiUrl;
+    var httpClient = Client();
+    return Web3Client(url, httpClient);
+  }
+}
+
+enum Rpc {
+  sepolia,
+  eth,
 }

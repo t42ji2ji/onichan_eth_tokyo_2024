@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:onichan/color_utils.dart';
+import 'package:onichan/pages/mechant_screen.dart';
 import 'package:onichan/pages/shop_screen.dart';
 import 'package:onichan/pd_utils.dart';
 import 'package:onichan/utils.dart';
@@ -133,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ShopScreen(),
+                          builder: (context) => const MerchantScreen(),
                         ),
                       );
                     },
