@@ -76,9 +76,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
             //     textAlign: TextAlign.center,
             //   ),
             // ),
-
             h24,
-
             Stack(
               children: [
                 Positioned(
@@ -89,7 +87,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen>
                       "すごい",
                       style: GoogleFonts.delaGothicOne().copyWith(
                         fontSize: 30,
-                        color: colorBlack,
+                        color: const Color.fromARGB(247, 34, 41, 0),
                       ),
                       textAlign: TextAlign.center,
                     )
