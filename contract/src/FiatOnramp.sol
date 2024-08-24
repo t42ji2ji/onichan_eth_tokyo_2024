@@ -10,15 +10,19 @@ contract FiatOnramp {
 
     IReclaimProofVerifier public immutable reclaimProofVerifier;
 
-    mapping(address => SellOrder) public orders;
+    mapping(uint256 => SellOrder) public orders;
+
+    uint256 public nextOrderId;
 
     event OrderCreated(
+        uint256 indexed orderId,
         address indexed from,
         address indexed token,
         uint256 amount,
         uint256 conditionHash
     );
     event OrderFilled(
+        uint256 indexed orderId,
         address indexed from,
         address indexed token,
         uint256 amount,
@@ -27,6 +31,7 @@ contract FiatOnramp {
 
     constructor(address _reclaimProofVerifier) {
         reclaimProofVerifier = IReclaimProofVerifier(_reclaimProofVerifier);
+        nextOrderId = 1;
     }
 
     function createOrder(
@@ -40,6 +45,7 @@ contract FiatOnramp {
     function _createOrder(
         address _token,
         uint256 _amount,
+        uint256 _conditionHash,
         uint256 deadline,
         uint8 v,
         bytes32 r,
@@ -62,10 +68,6 @@ contract FiatOnramp {
         uint256 _amount,
         uint256 _conditionHash
     ) internal {
-        require(
-            orders[msg.sender].from == address(0),
-            "FiatOnramp: order already exists"
-        );
         require(_token != address(0), "FiatOnramp: invalid token");
         require(_amount > 0, "FiatOnramp: amount must be greater than 0");
         IERC20(_token).safeTransferFrom(msg.sender, address(this), _amount);
@@ -76,24 +78,41 @@ contract FiatOnramp {
             amount: _amount,
             conditionHash: _conditionHash
         });
-        orders[msg.sender] = order;
-        emit OrderCreated(msg.sender, _token, _amount, _conditionHash);
+        orders[nextOrderId] = order;
+        emit OrderCreated(
+            nextOrderId,
+            msg.sender,
+            _token,
+            _amount,
+            _conditionHash
+        );
+        nextOrderId++;
     }
 
     function fillOrder(
-        address _from,
+        uint256 _orderId,
         Proof memory proof,
         uint256 _conditionHash
     ) external {
-        SellOrder memory order = orders[_from];
+        SellOrder memory order = orders[_orderId];
         require(order.from != address(0), "FiatOnramp: order does not exist");
         require(
             order.conditionHash == _conditionHash,
             "FiatOnramp: invalid condition hash"
         );
+        require(
+            reclaimProofVerifier.verifyProof(proof),
+            "FiatOnramp: invalid proof"
+        );
         IERC20(order.token).safeTransfer(msg.sender, order.amount);
-        delete orders[_from];
-        emit OrderFilled(_from, order.token, order.amount, _conditionHash);
+        delete orders[_orderId];
+        emit OrderFilled(
+            _orderId,
+            order.from,
+            order.token,
+            order.amount,
+            _conditionHash
+        );
     }
 
     receive() external payable {}
